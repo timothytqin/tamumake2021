@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import LineChart from "../components/LineChart";
 import UpperDash from "../components/UpperDash";
+import { firestore } from "../firebase/firebase";
+import CustomText from "../components/CustomText";
 
 export default function Dashboard({ navigation }) {
   navigation.setOptions({
@@ -10,26 +12,49 @@ export default function Dashboard({ navigation }) {
     tabBarIcon: () => <SimpleLineIcons name="speedometer" size={25} />,
   });
 
-  const data = [
-    { x: 0, y: 12 },
-    { x: 1, y: 7 },
-    { x: 2, y: 6 },
-    { x: 3, y: 3 },
-    { x: 4, y: 5 },
-    { x: 5, y: 8 },
-    { x: 6, y: 12 },
-    { x: 7, y: 14 },
-    { x: 8, y: 12 },
-    { x: 9, y: 13.5 },
-    { x: 10, y: 18 },
-  ];
+  const [data, setData] = useState([]);
+  const [avgCPM, setAvgCPM] = useState(0);
+
+  const getRndInteger = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  useEffect(() => {
+    firestore.collection("readings").onSnapshot((snapshot) => {
+      var tempData = [];
+      let sum = 0;
+      snapshot.forEach((doc) => {
+        const docData = doc.data();
+        const newData = {
+          x: parseInt(docData.timestamp) * 1000,
+          y: parseInt(docData.cpm) + getRndInteger(-1, 1),
+        };
+        tempData.push(newData);
+        sum += newData.y;
+      });
+      tempData.sort((a, b) => a.x > b.x);
+      setData(tempData);
+      setAvgCPM(sum / tempData.length);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
-      <UpperDash cpm={42} />
-      <View style={{ marginVertical: "10%" }}>
-        <LineChart data={data} />
-      </View>
+      <UpperDash cpm={Math.floor(avgCPM)} />
+      {data.length > 0 && (
+        <View style={{ marginVertical: "10%" }}>
+          <LineChart data={data} />
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <CustomText value={`${new Date().getHours() - 4}:00`} />
+            <CustomText value={`${new Date().getHours() - 3}:00`} />
+            <CustomText value={`${new Date().getHours() - 2}:00`} />
+            <CustomText value={`${new Date().getHours() - 1}:00`} />
+            <CustomText value={`${new Date().getHours()}:00`} />
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -39,7 +64,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "10%",
     paddingVertical: "10%",
     paddingTop: "20%",
-    backgroundColor: "#fff",
+    backgroundColor: "#F2F3F7",
     flex: 1,
   },
 });

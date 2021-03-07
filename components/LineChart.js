@@ -9,6 +9,14 @@ import {
 } from "react-native-responsive-linechart";
 
 export default function LineChart({ data }) {
+  const beginX = new Date().getTime() - 1000 * 60 * 60;
+  const getMinX = (data) => {
+    let min = new Date().getTime();
+    for (const point of data) {
+      min = Math.min(point.x, min);
+    }
+    return min;
+  };
   const getMaxX = (data) => {
     let max = 0;
     for (const point of data) {
@@ -34,10 +42,13 @@ export default function LineChart({ data }) {
       }}
       data={data}
       padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-      xDomain={{ min: 0, max: getMaxX(data) }}
+      xDomain={{
+        min: getMinX(data),
+        max: getMaxX(data),
+      }}
       yDomain={{ min: 0, max: getMaxY(data) * 1.2 }}
     >
-      <HorizontalAxis
+      {/* <HorizontalAxis
         theme={{
           axis: { visible: false },
           grid: {
@@ -46,12 +57,12 @@ export default function LineChart({ data }) {
           ticks: { visible: false },
         }}
         tickCount={5}
-      />
+      /> */}
       <Area
         theme={{
           gradient: {
             from: { color: "#8CB4ED" },
-            to: { color: "#fff", opacity: 0.5 },
+            to: { color: "#F2F3F7", opacity: 0.5 },
           },
         }}
       />
@@ -63,9 +74,7 @@ export default function LineChart({ data }) {
             selected: { color: "#276DD4" },
           },
         }}
-        tooltipComponent={
-          <Tooltip theme={{ formatter: ({ y }) => y.toFixed(2) }} />
-        }
+        tooltipComponent={<Tooltip theme={{ formatter: ({ y }) => y }} />}
       />
     </Chart>
   );

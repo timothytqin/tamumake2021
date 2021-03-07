@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import RootNav from "./screens/RootNav";
+import Auth from "./screens/AuthStackNav";
 
 export default function App() {
+  console.disableYellowBox = true;
   return (
     <NavigationContainer>
-      <RootNav />
+      <Auth />
     </NavigationContainer>
   );
 }

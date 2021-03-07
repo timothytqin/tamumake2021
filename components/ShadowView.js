@@ -17,11 +17,11 @@ export default function ShadowView({ children, containerStyles }) {
     >
       <View
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: "#F2F3F7",
           borderRadius: 8,
           padding: 10,
           marginVertical: 5,
-          marginHorizontal: 5,
+          marginRight: 5,
           ...containerStyles,
         }}
       >

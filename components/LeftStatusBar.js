@@ -3,7 +3,6 @@ import RangeTile from "./RangeTile";
 
 export default function LeftStatusBar({ cpm }) {
   const getRange = () => {
-    console.log(typeof cpm);
     if (cpm < 40) return 0;
     if (cpm < 60) return 1;
     if (cpm < 100) return 2;
@@ -30,13 +29,13 @@ export default function LeftStatusBar({ cpm }) {
         selected={selected == 1}
       />
       <RangeTile
-        range="50-99"
+        range="60-89"
         level="high"
         color="#E26D48"
         selected={selected == 2}
       />
       <RangeTile
-        range="100+"
+        range="90+"
         level="very high"
         color="#4B4B4B"
         selected={selected == 3}
