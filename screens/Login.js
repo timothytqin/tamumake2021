@@ -18,9 +18,19 @@ export default function Login({ navigation }) {
         <CustomText value="Radiation" bold />
       </View>
       <View style={{ marginVertical: 50, width: 300 }}>
-        <CustomInput value={username} setValue={setUsername} />
+        <CustomInput
+          value={username}
+          setValue={setUsername}
+          placeholder="Username"
+        />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <CustomInput value={password} setValue={setPassword} width={260} />
+          <CustomInput
+            value={password}
+            setValue={setPassword}
+            width={260}
+            placeholder="Password"
+            password
+          />
           <TouchableOpacity
             style={{
               padding: 5,

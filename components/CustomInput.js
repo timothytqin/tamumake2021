@@ -2,7 +2,13 @@ import React from "react";
 import { TextInput } from "react-native";
 import InsetShadow from "react-native-inset-shadow";
 
-export default function CustomInput({ value, setValue, width }) {
+export default function CustomInput({
+  value,
+  setValue,
+  width,
+  placeholder,
+  password,
+}) {
   return (
     <InsetShadow
       containerStyle={{ height: 40, borderRadius: 5, marginVertical: 5 }}
@@ -18,7 +24,8 @@ export default function CustomInput({ value, setValue, width }) {
         style={{ height: 40, padding: 5, width: width ? width : 300 }}
         onChangeText={(text) => setValue(text)}
         value={value}
-        placeholder={"Username"}
+        placeholder={placeholder}
+        secureTextEntry={password}
       />
     </InsetShadow>
   );
